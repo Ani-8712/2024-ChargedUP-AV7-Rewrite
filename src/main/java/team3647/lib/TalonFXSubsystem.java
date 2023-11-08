@@ -164,7 +164,7 @@ public abstract class TalonFXSubsystem implements PeriodicSubsystem {
 
     /** Sets the selected sensor to 0 (default) */
     public void resetEncoder(int timeoutMS) {
-        master.setRotorPosition(0, timeoutMS);
+        master.setPosition(0, timeoutMS);
     }
 
     /**
@@ -173,7 +173,7 @@ public abstract class TalonFXSubsystem implements PeriodicSubsystem {
      * @param position position in output units
      */
     protected void setEncoder(double position) {
-        master.setRotorPosition(position / positionConversion);
+        master.setPosition(position / positionConversion);
     }
     /**
      * @return the velocity in the output units
