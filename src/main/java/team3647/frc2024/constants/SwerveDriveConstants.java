@@ -1,6 +1,5 @@
 package team3647.frc2024.constants;
 
-import com.ctre.phoenix6.StatusCode;
 // import com.ctre.phoenix.ErrorCode;
 // import com.ctre.phoenix.motorcontrol.NeutralMode;
 // import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -13,14 +12,11 @@ import com.ctre.phoenix6.StatusCode;
 // import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 // import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix6.configs.*;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SwerveModuleSteerFeedbackType;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -29,15 +25,14 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import team3647.lib.CommandSwerveDrivetrain;
-import team3647.lib.SwerveModule;
 
 public class SwerveDriveConstants {
     // default falcon rotates counter clockwise (CCW)
     // make sure gyro -CW, +CCW
 
-    public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
+    public static final SensorDirectionValue canCoderInvert =
+            SensorDirectionValue.CounterClockwise_Positive;
     public static final InvertedValue kDriveMotorInverted = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue kTurnMotorInverted = InvertedValue.Clockwise_Positive;
 
@@ -50,7 +45,8 @@ public class SwerveDriveConstants {
 
     public static final PIDController kAutoSteerXYPIDController = new PIDController(0.10, 0, 0);
 
-    public static final Pigeon2 kGyro = new Pigeon2(GlobalConstants.SwerveDriveIds.gyroPin, "drive");
+    public static final Pigeon2 kGyro =
+            new Pigeon2(GlobalConstants.SwerveDriveIds.gyroPin, "drive");
 
     // config swerve module reversed here, module class doens't reverse for you
 
@@ -76,11 +72,12 @@ public class SwerveDriveConstants {
     public static final double kLeftModulePoseY = kTrackWidth / 2.0;
     public static final double kRightModulePoseY = -kLeftModulePoseY;
 
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-            new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
-            new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
-            new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0));
+    public static final SwerveDriveKinematics kDriveKinematics =
+            new SwerveDriveKinematics(
+                    new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
+                    new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
+                    new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
+                    new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0));
 
     // config conversion factors here for each module. in meters for postiion and
     // radians for
@@ -96,7 +93,8 @@ public class SwerveDriveConstants {
 
     public static final double kTurnMotorNativeToDPS = kTurnMotorNativeToDeg; // RPS / Native/10ms
 
-    public static final double kWheelRotationToMetersDrive = kWheelDiameterMeters * Math.PI * kDriveMotorGearRatio;
+    public static final double kWheelRotationToMetersDrive =
+            kWheelDiameterMeters * Math.PI * kDriveMotorGearRatio;
 
     // Multiply by 10 because velocity is in ticks/100ms
     public static final double kFalconVelocityToMpS = kWheelRotationToMetersDrive;
@@ -127,14 +125,16 @@ public class SwerveDriveConstants {
 
     // max speed limits that we want
     public static final double kTeleopDriveMaxAccelUnitsPerSec = kDrivePossibleMaxSpeedMPS / 2;
-    public static final double kTeleopDriveMaxAngularAccelUnitsPerSec = kRotPossibleMaxSpeedRadPerSec / 3;
+    public static final double kTeleopDriveMaxAngularAccelUnitsPerSec =
+            kRotPossibleMaxSpeedRadPerSec / 3;
 
     // master FF for drive for all modules
     public static final double kS = (0.56744 / 12); // 0.56744; // Volts
     public static final double kV = (2.5 / 12.0); // Volts
     public static final double kA = (0.0 / 12); // Volts
 
-    public static final SimpleMotorFeedforward kMasterDriveFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
+    public static final SimpleMotorFeedforward kMasterDriveFeedforward =
+            new SimpleMotorFeedforward(kS, kV, kA);
 
     // master PID constants for turn and drive for all modules
     public static final double kDriveP = 0.00014;
@@ -156,55 +156,70 @@ public class SwerveDriveConstants {
             this.kD = kD;
         }
     }
-    public static final SwerveDrivetrainConstants kDrivetrainConstants = new SwerveDrivetrainConstants()
-        .withPigeon2Id(GlobalConstants.SwerveDriveIds.gyroPin)
-        .withCANbusName("drive")
-        .withSupportsPro(false);     
 
-    public static final SwerveModuleConstantsFactory kConstantsCreator = new SwerveModuleConstantsFactory()
-            .withDriveMotorGearRatio(kDriveMotorGearRatio)
-            .withSteerMotorGearRatio(kTurnMotorGearRatio)
-            .withWheelRadius(Units.metersToInches(kWheelDiameterMeters / 2))
-            .withDriveMotorGains(new CustomSlotGains(kDriveP, kDriveI, kDriveD))
-            .withSteerMotorGains(new CustomSlotGains(kTurnP, kTurnI, kTurnD))
-            .withFeedbackSource(SwerveModuleSteerFeedbackType.RemoteCANcoder);
+    public static final SwerveDrivetrainConstants kDrivetrainConstants =
+            new SwerveDrivetrainConstants()
+                    .withPigeon2Id(GlobalConstants.SwerveDriveIds.gyroPin)
+                    .withCANbusName("drive")
+                    .withSupportsPro(false);
 
-    public static final SwerveModuleConstants kFrontLeftModule = kConstantsCreator.createModuleConstants(
-            GlobalConstants.SwerveDriveIds.kFrontLeftTurnId,
-            GlobalConstants.SwerveDriveIds.kFrontLeftDriveId,
-            GlobalConstants.SwerveDriveIds.kFrontLeftAbsEncoderPort,
-            kAbsFrontLeftEncoderOffsetDeg,
-            kFrontModulePoseX,
-            kLeftModulePoseY, false);
+    public static final SwerveModuleConstantsFactory kConstantsCreator =
+            new SwerveModuleConstantsFactory()
+                    .withDriveMotorGearRatio(kDriveMotorGearRatio)
+                    .withSteerMotorGearRatio(kTurnMotorGearRatio)
+                    .withWheelRadius(Units.metersToInches(kWheelDiameterMeters / 2))
+                    .withDriveMotorGains(new CustomSlotGains(kDriveP, kDriveI, kDriveD))
+                    .withSteerMotorGains(new CustomSlotGains(kTurnP, kTurnI, kTurnD))
+                    .withFeedbackSource(SwerveModuleSteerFeedbackType.RemoteCANcoder);
 
-    public static final SwerveModuleConstants kFrontRightModule = kConstantsCreator.createModuleConstants(
-            GlobalConstants.SwerveDriveIds.kFrontRightTurnId,
-            GlobalConstants.SwerveDriveIds.kFrontRightDriveId,
-            GlobalConstants.SwerveDriveIds.kFrontRightAbsEncoderPort,
-            kAbsFrontRightEncoderOffsetDeg,
-            kFrontModulePoseX,
-            kRightModulePoseY, false);
+    public static final SwerveModuleConstants kFrontLeftModule =
+            kConstantsCreator.createModuleConstants(
+                    GlobalConstants.SwerveDriveIds.kFrontLeftTurnId,
+                    GlobalConstants.SwerveDriveIds.kFrontLeftDriveId,
+                    GlobalConstants.SwerveDriveIds.kFrontLeftAbsEncoderPort,
+                    kAbsFrontLeftEncoderOffsetDeg,
+                    kFrontModulePoseX,
+                    kLeftModulePoseY,
+                    false);
 
-    public static final SwerveModuleConstants kBackLeftModule = kConstantsCreator.createModuleConstants(
-            GlobalConstants.SwerveDriveIds.kBackLeftTurnId,
-            GlobalConstants.SwerveDriveIds.kBackLeftDriveId,
-            GlobalConstants.SwerveDriveIds.kBackLeftAbsEncoderPort,
-            kAbsBackLeftEncoderOffsetDeg,
-            kBackModulePoseX,
-            kLeftModulePoseY, false);
-    
-    public static final SwerveModuleConstants kBackRightModule = kConstantsCreator.createModuleConstants(
-            GlobalConstants.SwerveDriveIds.kBackRightTurnId,
-            GlobalConstants.SwerveDriveIds.kBackRightDriveId,
-            GlobalConstants.SwerveDriveIds.kBackRightAbsEncoderPort,
-            kAbsBackRightEncoderOffsetDeg,
-            kBackModulePoseX,
-            kRightModulePoseY, false);
-    
-    public static final CommandSwerveDrivetrain kSwerveDrivetrain = new CommandSwerveDrivetrain(
-       kDrivetrainConstants , kFrontLeftModule, kFrontRightModule, kBackLeftModule, kBackRightModule);
-    public static final String kAutoSteerHeadingController = null;
+    public static final SwerveModuleConstants kFrontRightModule =
+            kConstantsCreator.createModuleConstants(
+                    GlobalConstants.SwerveDriveIds.kFrontRightTurnId,
+                    GlobalConstants.SwerveDriveIds.kFrontRightDriveId,
+                    GlobalConstants.SwerveDriveIds.kFrontRightAbsEncoderPort,
+                    kAbsFrontRightEncoderOffsetDeg,
+                    kFrontModulePoseX,
+                    kRightModulePoseY,
+                    false);
 
-    private SwerveDriveConstants() {
-    }
+    public static final SwerveModuleConstants kBackLeftModule =
+            kConstantsCreator.createModuleConstants(
+                    GlobalConstants.SwerveDriveIds.kBackLeftTurnId,
+                    GlobalConstants.SwerveDriveIds.kBackLeftDriveId,
+                    GlobalConstants.SwerveDriveIds.kBackLeftAbsEncoderPort,
+                    kAbsBackLeftEncoderOffsetDeg,
+                    kBackModulePoseX,
+                    kLeftModulePoseY,
+                    false);
+
+    public static final SwerveModuleConstants kBackRightModule =
+            kConstantsCreator.createModuleConstants(
+                    GlobalConstants.SwerveDriveIds.kBackRightTurnId,
+                    GlobalConstants.SwerveDriveIds.kBackRightDriveId,
+                    GlobalConstants.SwerveDriveIds.kBackRightAbsEncoderPort,
+                    kAbsBackRightEncoderOffsetDeg,
+                    kBackModulePoseX,
+                    kRightModulePoseY,
+                    false);
+
+    public static final CommandSwerveDrivetrain kSwerveDrivetrain =
+            new CommandSwerveDrivetrain(
+                    kDrivetrainConstants,
+                    kFrontLeftModule,
+                    kFrontRightModule,
+                    kBackLeftModule,
+                    kBackRightModule);
+    public static final PIDController kAutoSteerHeadingController = new PIDController(0.12, 0, 0);
+
+    private SwerveDriveConstants() {}
 }

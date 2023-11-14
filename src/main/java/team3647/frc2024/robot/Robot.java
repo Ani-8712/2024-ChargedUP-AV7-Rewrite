@@ -4,9 +4,7 @@
 
 package team3647.frc2024.robot;
 
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -26,10 +24,6 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         super(.02);
-        addPeriodic(
-                () -> robotContainer.superstructure.periodic(Timer.getFPGATimestamp()),
-                kTwentyMSLoopTime,
-                0.019);
     }
 
     /**
@@ -44,7 +38,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // // autonomous chooser on the dashboard.
-        robotContainer.swerve.resetModuleAngle();
+
         // robotContainer.swerve.reduceCancoderStatusframes();
     }
 
@@ -69,9 +63,7 @@ public class Robot extends TimedRobot {
 
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
-    public void disabledInit() {
-        robotContainer.wrist.setNeutralMode(NeutralModeValue.Coast);
-    }
+    public void disabledInit() {}
 
     @Override
     public void disabledPeriodic() {}
@@ -81,9 +73,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.swerve.zeroPitch();
+
         autonomousCommand = robotContainer.getAutonomousCommand();
-        robotContainer.wrist.setNeutralMode(NeutralModeValue.Coast);
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
@@ -101,12 +92,10 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        robotContainer.wrist.setNeutralMode(NeutralModeValue.Brake);
 
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
-        robotContainer.superstructure.enableCompressor().schedule();
     }
 
     /** This function is called periodically during operator control. */
